@@ -44,6 +44,15 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Comandos adicionais
+```
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo service postgresql start
+yarn add typeorm @nestjs/typeorm pg
+```
+
+
 ## Run tests
 
 ```bash
