@@ -4,12 +4,16 @@ import { UpdateLivrosDto } from './dto/update-livros.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Livros } from './entities/livros.entity';
+import { Editoras } from '../editoras/entities/editoras.entity';
 
 @Injectable()
 export class LivrosService {
   constructor(
     @InjectRepository(Livros)
     private readonly livrosRepository : Repository<Livros>,
+
+    @InjectRepository(Editoras)
+    private EditorasRepository: Repository<Editoras>,
   ) {}
 
   async create(createLivrosDto: CreateLivrosDto) {
