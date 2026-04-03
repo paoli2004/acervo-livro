@@ -1,6 +1,21 @@
 # Rascunho
 
+Usamos o ubuntu WSL
+
 Postgres 18.3
+
+Comandos que usamos para fazer a conexão entre o código e o DB:
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo service postgresql start
+yarn add typeorm @nestjs/typeorm pg
+
+modelagem:
+
+https://dbdiagram.io/d/69cf05f678c6c4bc7ad17c24
+
+
+
 
 
 
