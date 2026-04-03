@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { AutoresService } from './autores.service';
 import { CreateAutorDto } from './dto/createAutor.dto';
 import { Autores } from './entities/autores.entity';
@@ -8,12 +8,25 @@ export class AutoresController {
   constructor(private readonly autoresService: AutoresService) {}
 
   @Post()
-  async createAutor(@Body() createAutor: CreateAutorDto) {
-    return await this.autoresService.createAutor(createAutor);
+  createAutor(@Body() createAutor: CreateAutorDto) {
+    return this.autoresService.createAutor(createAutor);
+  }
+
+  @Put(':id')
+  updateAutor(
+    @Param('id') id: number,
+    @Body() updateAutor: CreateAutorDto,
+  ): Promise<Autores> {
+    return this.autoresService.updateAutor(id, updateAutor);
+  }
+
+  @Get(':id')
+  getAutorById(@Param('id') id: number): Promise<Autores | null> {
+    return this.autoresService.getAutorById(id);
   }
 
   @Get()
-  async getAllAutores(): Promise<Autores[]> {
-    return await this.autoresService.getAllAutores();
+  getAllAutores(): Promise<Autores[]> {
+    return this.autoresService.getAllAutores();
   }
 }
