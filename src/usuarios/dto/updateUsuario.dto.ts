@@ -5,5 +5,5 @@ import { CreateUsuarioDto } from "./createUsuario.dto";
 // PartialType é uma função que recebe um tipo e retorna um novo tipo com todas as propriedades opcionais
 // PickType é uma função que recebe um tipo e um array de chaves e retorna um novo tipo com apenas as propriedades selecionadas
 export class UpdateUsuarioDto extends PartialType(
-    PickType(CreateUsuarioDto, ['name', 'email', 'password'] as const),
+    PickType(CreateUsuarioDto, ['nome', 'email', 'senha'] as const),
 ) {}

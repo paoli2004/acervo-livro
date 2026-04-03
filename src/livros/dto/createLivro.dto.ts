@@ -11,7 +11,7 @@ export class CreateLivroDto {
 
     @IsNotEmpty()
     @IsInt()
-    anoPublicacao!: number;
+    ano_publicacao!: number;
 
     @IsNotEmpty()
     @IsString()

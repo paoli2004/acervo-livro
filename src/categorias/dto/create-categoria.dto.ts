@@ -1,1 +1,0 @@
-// DTO for creating Categoria
