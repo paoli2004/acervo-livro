@@ -4,7 +4,7 @@ import { CreateCategoriaDto } from './dto/createCategoria.dto';
 import { Categorias } from './entities/categorias.entity';
 import { UpdateCategoriaDto } from './dto/updateCategoria.dto';
 
-@Controller('caegorias')
+@Controller('categorias')
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
