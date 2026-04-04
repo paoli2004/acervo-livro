@@ -41,7 +41,7 @@ export class AutoresService {
   /**
    * Retorna um autor.
    * @param id - ID do autor.
-   * @returns Autor encontrado
+   * @returns Autor encontrado.
    */
   async getAutorById(id: number): Promise<Autores | null> {
     if (!id) {

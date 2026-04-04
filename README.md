@@ -15,7 +15,18 @@ modelagem:
 https://dbdiagram.io/d/69cf05f678c6c4bc7ad17c24
 
 
+TO DO
 
+- [ ] Atualizar controller e services das seguintes entidades (seguir exemplo  de usuarios e autores)
+    - [ ] categorias
+    - [ ] editoras
+    - [ ] emprestimos
+    - [ ] exemplares
+    - [ ] livros
+
+- [ ] Adicionar validação de campos ao criar ou realizar update
+- [ ] Fazer front para requisições
+- [ ] Verificar viabilidade quanto a criação de arquivos de teste
 
 
 
