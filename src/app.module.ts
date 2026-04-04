@@ -33,7 +33,7 @@ import { CategoriasModule } from './categorias/categorias.module';
     EmprestimosModule,
     ExemplaresModule,
     EditorasModule,
-    CategoriasModule
+    CategoriasModule,
   ],
 })
 export class AppModule {}
