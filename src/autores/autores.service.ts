@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Autores } from './entities/autores.entity';
 import { CreateAutorDto } from './dto/createAutor.dto';
+import { updateAutorDto } from './dto/updateAutor.dto';
 
 @Injectable()
 export class AutoresService {
@@ -16,8 +17,8 @@ export class AutoresService {
    * @param createAutor - Dados do autor.
    * @returns Autor criado.
    */
-  async createAutor(createAutor: CreateAutorDto): Promise<Autores> {
-    return this.autoresRepository.save(createAutor);
+  async createAutor(createAutor: CreateAutorDto): Promise<void> {
+    await this.autoresRepository.save(createAutor);
   }
 
   /**
@@ -26,7 +27,7 @@ export class AutoresService {
    * @param updateAutor - Dados para atualização de autor.
    * @returns Autor atualizado.
    */
-  async updateAutor(id: number, updateAutor: CreateAutorDto): Promise<Autores> {
+  async updateAutor(id: number, updateAutor: updateAutorDto): Promise<void> {
     const autor = await this.getAutorById(id);
 
     if (!autor) {
@@ -35,7 +36,21 @@ export class AutoresService {
 
     Object.assign(autor, updateAutor);
 
-    return this.autoresRepository.save(autor);
+    await this.autoresRepository.save(autor);
+  }
+
+  /**
+   * Remove um autor.
+   * @param id ID do autor.
+   */
+  async removeAutor(id: number): Promise<void> {
+    const autor = await this.getAutorById(id);
+
+    if (!autor) {
+      throw new NotFoundException('Autor não encontrado');
+    }
+
+    await this.autoresRepository.remove(autor);
   }
 
   /**

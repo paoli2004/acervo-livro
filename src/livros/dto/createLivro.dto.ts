@@ -14,6 +14,13 @@ export class CreateLivroDto {
   ano_publicacao!: number;
 
   @IsNotEmpty()
-  @IsString()
-  nome!: string;
+  @IsInt()
+  editora_id!: number;
+
+  @IsInt()
+  autor_id?: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  categoria_id!: number;
 }
