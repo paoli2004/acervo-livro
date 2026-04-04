@@ -7,6 +7,11 @@ import {
 } from 'typeorm';
 import { Emprestimos } from '../../emprestimos/entities/emprestimos.entity';
 
+export enum TipoUsuario {
+  ADMIN = 'ADMIN',
+  CLIENTE = 'CLIENTE',
+}
+
 @Entity({ name: 'usuarios' })
 export class Usuarios {
   @PrimaryGeneratedColumn()
@@ -21,8 +26,12 @@ export class Usuarios {
   @Column({ length: 255 })
   senha!: string;
 
-  @Column({ length: 20 })
-  tipo!: string;
+  @Column({
+    type: 'enum',
+    enum: TipoUsuario,
+    default: TipoUsuario.CLIENTE,
+  })      
+  tipo!: TipoUsuario;
 
   @CreateDateColumn({ type: 'timestamp' })
   criado_em!: Date;

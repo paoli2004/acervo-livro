@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/createUsuario.dto';
 import { UpdateUsuarioDto } from './dto/updateUsuario.dto';
@@ -8,25 +8,42 @@ export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Post()
-  createUsuario(@Body() createUsuario: CreateUsuarioDto) {
-    return this.usuariosService.createUsuario(createUsuario);
+  async createUsuario(@Body() createUsuario: CreateUsuarioDto) {
+    await this.usuariosService.createUsuario(createUsuario);
+
+    return {
+      message: 'Usuário criado com sucesso',
+    };
   }
 
   @Put(':id')
-  updateUsuario(
+  async updateUsuario(
     @Param('id') id: number,
     @Body() updateUsuario: UpdateUsuarioDto,
   ) {
-    return this.usuariosService.updateUsuario(id, updateUsuario);
+    await this.usuariosService.updateUsuario(id, updateUsuario);
+
+    return {
+      message: 'Usuário atualizado com sucesso',
+    };
+  }
+
+  @Delete(':id')
+  async removeUsuario(@Param('id') id: number) {
+    await this.usuariosService.removeUsuario(id);
+
+    return {
+      message: 'Usuário removido com sucesso',
+    };
   }
 
   @Get(':id')
-  getUsuarioById(@Param('id') id: number) {
+  async getUsuarioById(@Param('id') id: number) {
     return this.usuariosService.getUsuarioById(id);
   }
 
   @Get()
-  getAllUsuarios() {
+  async getAllUsuarios() {
     return this.usuariosService.getAllUsuarios();
   }
 }

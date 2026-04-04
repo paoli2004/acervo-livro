@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuarios } from './entities/usuarios.entity';
 import { Repository } from 'typeorm';
@@ -17,14 +21,21 @@ export class UsuariosService {
    * @param createUsuario
    * @returns Usuario criado.
    */
-  async createUsuario(createUsuario: CreateUsuarioDto): Promise<Usuarios> {
-    return this.usuariosRepository.save(createUsuario);
+  async createUsuario(createUsuario: CreateUsuarioDto): Promise<void> {
+    const usuario = this.usuariosRepository.create(createUsuario);
+    await this.usuariosRepository.save(usuario);
   }
 
+  /**
+   * Atualiza um usuário existente.
+   * @param id
+   * @param updateUsuario
+   * @returns Usuário atualizado.
+   */
   async updateUsuario(
     id: number,
     updateUsuario: UpdateUsuarioDto,
-  ): Promise<Usuarios> {
+  ): Promise<void> {
     const usuario = await this.getUsuarioById(id);
 
     if (!usuario) {
@@ -33,7 +44,7 @@ export class UsuariosService {
 
     Object.assign(usuario, updateUsuario);
 
-    return this.usuariosRepository.save(usuario);
+    await this.usuariosRepository.save(usuario);
   }
 
   /**
@@ -49,10 +60,29 @@ export class UsuariosService {
   }
 
   /**
+   * Remove um usuário.
+   * @param id
+   */
+  async removeUsuario(id: number): Promise<void> {
+    const usuario = await this.getUsuarioById(id);
+
+    if (!usuario) {
+      throw new NotFoundException('Usuário não encontrado');
+    } else if (usuario.tipo === 'ADMIN') {
+      throw new ForbiddenException('Não é permitido remover um usuário ADMIN');
+    }
+
+    await this.usuariosRepository.remove(usuario);
+  }
+
+  /**
    * Retorna todos os usuários registrados.
    * @returns Lista de usuários.
    */
   async getAllUsuarios(): Promise<Usuarios[]> {
-    return this.usuariosRepository.find();
+    return this.usuariosRepository.find({
+      order: { id: 'ASC' },
+      select: ['id', 'nome', 'email'],
+    });
   }
 }

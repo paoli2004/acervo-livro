@@ -55,6 +55,8 @@ export class AutoresService {
    * @returns Lista de autores.
    */
   async getAllAutores(): Promise<Autores[]> {
-    return this.autoresRepository.find();
+    return this.autoresRepository.find({
+      order: { id: 'ASC' },
+    });
   }
 }
