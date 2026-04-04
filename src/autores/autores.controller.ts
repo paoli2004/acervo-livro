@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AutoresService } from './autores.service';
 import { CreateAutorDto } from './dto/createAutor.dto';
 import { Autores } from './entities/autores.entity';
@@ -8,25 +16,42 @@ export class AutoresController {
   constructor(private readonly autoresService: AutoresService) {}
 
   @Post()
-  createAutor(@Body() createAutor: CreateAutorDto) {
-    return this.autoresService.createAutor(createAutor);
+  async createAutor(@Body() createAutor: CreateAutorDto) {
+    await this.autoresService.createAutor(createAutor);
+
+    return {
+      message: 'Autor criado com sucesso',
+    };
   }
 
   @Put(':id')
-  updateAutor(
+  async updateAutor(
     @Param('id') id: number,
     @Body() updateAutor: CreateAutorDto,
-  ): Promise<Autores> {
-    return this.autoresService.updateAutor(id, updateAutor);
+  ) {
+    await this.autoresService.updateAutor(id, updateAutor);
+
+    return {
+      message: 'Autor atualizado com sucesso',
+    };
+  }
+
+  @Delete(':id')
+  async removeAutor(@Param('id') id: number) {
+    await this.autoresService.removeAutor(id);
+
+    return {
+      message: 'Autor removido com sucesso',
+    };
   }
 
   @Get(':id')
-  getAutorById(@Param('id') id: number): Promise<Autores | null> {
+  async getAutorById(@Param('id') id: number): Promise<Autores | null> {
     return this.autoresService.getAutorById(id);
   }
 
   @Get()
-  getAllAutores(): Promise<Autores[]> {
+  async getAllAutores(): Promise<Autores[]> {
     return this.autoresService.getAllAutores();
   }
 }

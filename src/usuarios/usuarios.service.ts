@@ -28,7 +28,7 @@ export class UsuariosService {
 
   /**
    * Atualiza um usuário existente.
-   * @param id
+   * @param id ID do usuário.
    * @param updateUsuario
    * @returns Usuário atualizado.
    */
@@ -49,7 +49,7 @@ export class UsuariosService {
 
   /**
    * Retorna um usuário.
-   * @param id
+   * @param id ID do usuário.
    * @returns Usuário encontrado.
    */
   async getUsuarioById(id: number): Promise<Usuarios | null> {
@@ -61,7 +61,7 @@ export class UsuariosService {
 
   /**
    * Remove um usuário.
-   * @param id
+   * @param id ID do usuário.
    */
   async removeUsuario(id: number): Promise<void> {
     const usuario = await this.getUsuarioById(id);

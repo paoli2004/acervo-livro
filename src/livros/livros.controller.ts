@@ -1,34 +1,57 @@
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { LivrosService } from './livros.service';
-// import { CreateLivroDto } from './dto/createLivro.dto';
-// import { UpdateLivroDto } from './dto/updateLivro.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { LivrosService } from './livros.service';
+import { CreateLivroDto } from './dto/createLivro.dto';
+import { UpdateLivroDto } from './dto/updateLivro.dto';
 
-// @Controller('livros')
-// export class LivrosController {
-//   constructor(private readonly livrosService: LivrosService) {}
+@Controller('livros')
+export class LivrosController {
+  constructor(private readonly livrosService: LivrosService) {}
 
-//   @Post()
-//   create(@Body() createLivrosDto: CreateLivroDto) {
-//     return this.livrosService.create(createLivrosDto);
-//   }
+  @Post()
+  async createLivro(@Body() createLivroDto: CreateLivroDto) {
+    await this.livrosService.createLivro(createLivroDto);
 
-//   @Get()
-//   findAll() {
-//     return this.livrosService.findAll();
-//   }
+    return {
+      message: 'Livro criado com sucesso',
+    };
+  }
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.livrosService.findOne(+id);
-//   }
+  @Put(':id')
+  async updateLivro(
+    @Param('id') id: number,
+    @Body() updateLivroDto: UpdateLivroDto,
+  ) {
+    await this.livrosService.updateLivro(id, updateLivroDto);
 
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateLivrosDto: UpdateLivroDto) {
-//     return this.livrosService.update(+id, updateLivrosDto);
-//   }
+    return {
+      message: 'Livro atualizado com sucesso',
+    };
+  }
 
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.livrosService.remove(+id);
-//   }
-// }
+  @Delete(':id')
+  async removeLivro(@Param('id') id: number) {
+    await this.livrosService.removeLivro(id);
+
+    return {
+      message: 'Livro removido com sucesso',
+    };
+  }
+
+  @Get()
+  async getAllLivros() {
+    return this.livrosService.getAllLivros();
+  }
+
+  @Get(':id')
+  async getLivroById(@Param('id') id: number) {
+    return this.livrosService.getLivroById(id);
+  }
+}

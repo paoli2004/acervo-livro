@@ -8,5 +8,6 @@ import { EditorasController } from './editoras.controller';
   imports: [TypeOrmModule.forFeature([Editoras])],
   controllers: [EditorasController],
   providers: [EditorasService],
+  exports: [EditorasService],
 })
 export class EditorasModule {}

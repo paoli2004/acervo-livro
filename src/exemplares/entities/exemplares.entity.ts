@@ -17,7 +17,7 @@ export class Exemplares {
   // um exemplar pertence a um livro, mas um livro pode ter muitos exemplares
   @ManyToOne(() => Livros, (livros) => livros.exemplares)
   @JoinColumn({ name: 'livro_id' })
-  livro!: Livros;
+  livros!: Livros;
 
   @Column({ length: 50, unique: true })
   codigo_patrimonio!: string;
