@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { EditorasService } from './editoras.service';
 import { CreateEditoraDto } from './dto/createEditora.dto';
+import { UpdateEditoraDto } from './dto/updateEditora.dto';
+
 import { Editoras } from './entities/editoras.entity';
 
 @Controller('editoras')
@@ -14,14 +24,16 @@ export class EditorasController {
 
   @Put(':id')
   updateEditora(
-    @Param('id') id: number,
-    @Body() updateEditora: CreateEditoraDto,
-  ): Promise<Editoras> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateEditora: UpdateEditoraDto,
+  ): Promise<Editoras | null> {
     return this.editorasService.updateEditora(id, updateEditora);
   }
 
   @Get(':id')
-  getEditoraById(@Param('id') id: number): Promise<Editoras | null> {
+  getEditoraById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Editoras | null> {
     return this.editorasService.getEditoraById(id);
   }
 

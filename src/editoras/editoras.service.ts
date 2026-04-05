@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Editoras } from './entities/editoras.entity';
 import { CreateEditoraDto } from './dto/createEditora.dto';
+import { UpdateEditoraDto } from './dto/updateEditora.dto';
 
 @Injectable()
 export class EditorasService {
@@ -28,17 +29,13 @@ export class EditorasService {
    */
   async updateEditora(
     id: number,
-    updateEditora: CreateEditoraDto,
-  ): Promise<Editoras> {
-    const editora = await this.getEditoraById(id);
+    updateEditora: UpdateEditoraDto,
+  ): Promise<Editoras | null> {
+    await this.getEditoraById(id);
 
-    if (!editora) {
-      throw new NotFoundException('Editora não encontrada');
-    }
+    await this.editorasRepository.update(id, updateEditora);
 
-    Object.assign(editora, updateEditora);
-
-    return this.editorasRepository.save(editora);
+    return this.getEditoraById(id);
   }
 
   /**
@@ -47,10 +44,13 @@ export class EditorasService {
    * @returns Editora encontrada.
    */
   async getEditoraById(id: number): Promise<Editoras | null> {
-    if (!id) {
+    const editora = await this.editorasRepository.findOne({ where: { id } });
+
+    if (!editora) {
       throw new NotFoundException('Editora não encontrada');
     }
-    return this.editorasRepository.findOne({ where: { id } });
+
+    return editora;
   }
 
   /**
