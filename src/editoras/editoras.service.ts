@@ -60,4 +60,13 @@ export class EditorasService {
   async getAllEditoras(): Promise<Editoras[]> {
     return this.editorasRepository.find();
   }
+
+  /**
+   * Remove uma Editora.
+   * @param id ID da Editora.
+   */
+  async removeEditora(id: number): Promise<void> {
+    const editora = await this.getEditoraById(id);
+    if (editora) await this.editorasRepository.remove(editora);
+  }
 }

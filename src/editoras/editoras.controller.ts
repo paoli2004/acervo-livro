@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Patch,
+  Delete,
   ParseIntPipe,
 } from '@nestjs/common';
 import { EditorasService } from './editoras.service';
@@ -40,5 +41,14 @@ export class EditorasController {
   @Get()
   getAllEditora(): Promise<Editoras[]> {
     return this.editorasService.getAllEditoras();
+  }
+
+  @Delete(':id')
+  async removeAutor(@Param('id', ParseIntPipe) id: number) {
+    await this.editorasService.removeEditora(id);
+
+    return {
+      message: 'Editora removida com sucesso',
+    };
   }
 }
