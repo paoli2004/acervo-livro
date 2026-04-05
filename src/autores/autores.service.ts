@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Autores } from './entities/autores.entity';
 import { CreateAutorDto } from './dto/createAutor.dto';
-import { updateAutorDto } from './dto/updateAutor.dto';
+import { UpdateAutorDto } from './dto/updateAutor.dto';
 
 @Injectable()
 export class AutoresService {
@@ -27,7 +27,7 @@ export class AutoresService {
    * @param updateAutor - Dados para atualização de autor.
    * @returns Autor atualizado.
    */
-  async updateAutor(id: number, updateAutor: updateAutorDto): Promise<void> {
+  async updateAutor(id: number, updateAutor: UpdateAutorDto): Promise<void> {
     const autor = await this.getAutorById(id);
 
     if (!autor) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { EditorasService } from './editoras.service';
 import { CreateEditoraDto } from './dto/createEditora.dto';
 import { Editoras } from './entities/editoras.entity';
@@ -12,7 +12,7 @@ export class EditorasController {
     return this.editorasService.createEditora(createEditora);
   }
 
-  @Put(':id')
+  @Patch(':id')
   updateEditora(
     @Param('id') id: number,
     @Body() updateEditora: CreateEditoraDto,

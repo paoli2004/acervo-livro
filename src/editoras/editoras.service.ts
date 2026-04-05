@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Editoras } from './entities/editoras.entity';
 import { CreateEditoraDto } from './dto/createEditora.dto';
+import { UpdateEditoraDto } from './dto/updateEditora.dto';
 
 @Injectable()
 export class EditorasService {
@@ -28,7 +29,7 @@ export class EditorasService {
    */
   async updateEditora(
     id: number,
-    updateEditora: CreateEditoraDto,
+    updateEditora: UpdateEditoraDto,
   ): Promise<Editoras> {
     const editora = await this.getEditoraById(id);
 

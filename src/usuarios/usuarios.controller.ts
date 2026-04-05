@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/createUsuario.dto';
@@ -24,7 +24,7 @@ export class UsuariosController {
     };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateUsuario(
     @Param('id') id: number,
     @Body() updateUsuario: UpdateUsuarioDto,
