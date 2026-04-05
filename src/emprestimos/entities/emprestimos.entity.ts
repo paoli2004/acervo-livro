@@ -18,10 +18,11 @@ export class Emprestimos {
   @JoinColumn({ name: 'usuario_id' })
   usuario!: Usuarios;
 
-  // um empréstimo pertence a um exemplar, mas um exemplar pode ter muitos empréstimos
-  @ManyToOne(() => Exemplares, (exemplares) => exemplares.emprestimos)
-  @JoinColumn({ name: 'exemplar_id' })
-  exemplar!: Exemplares;
+  // QUANDO FOR FAZER, DESENVOLVER A RELAÇÃO DOS EXEMPLARES NA ENTIDADE DE LÁ
+  // // um empréstimo pertence a um exemplar, mas um exemplar pode ter muitos empréstimos
+  // @ManyToOne(() => Exemplares, (exemplares) => exemplares.emprestimos)
+  // @JoinColumn({ name: 'exemplar_id' })
+  // exemplar!: Exemplares;
 
   @CreateDateColumn()
   data_emprestimo!: Date;

@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateExemplarDto {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  livro_id!: string;
+  livro_id!: number;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  codigo_patrimonio!: string;
+  codigo_patrimonio!: number;
 }

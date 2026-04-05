@@ -1,4 +1,5 @@
 import {
+  Check,
   Column,
   Entity,
   JoinColumn,
@@ -15,17 +16,15 @@ export class Exemplares {
   id!: number;
 
   // um exemplar pertence a um livro, mas um livro pode ter muitos exemplares
-  @ManyToOne(() => Livros, (livros) => livros.exemplares)
+  @ManyToOne(() => Livros, (livro) => livro.exemplares)
   @JoinColumn({ name: 'livro_id' })
   livros!: Livros;
 
-  @Column({ length: 50, unique: true })
-  codigo_patrimonio!: string;
+  @Column({ unique: true, type: 'int' })
+  codigo_patrimonio!: number;
 
-  @Column({ length: 20 })
-  status!: string;
-
-  // um exemplar pode ter muitos empréstimos, mas um empréstimo pertence a um exemplar
-  @OneToMany(() => Emprestimos, (emprestimos) => emprestimos.exemplar)
-  emprestimos!: Emprestimos[];
+  // DESCOMENTAR SOMENTE QUANDO EMPRESTIMOS FOR FEITO
+  // // um exemplar pode ter muitos empréstimos, mas um empréstimo pertence a um exemplar
+  // @OneToMany(() => Emprestimos, (emprestimos) => emprestimos.exemplar)
+  // emprestimos!: Emprestimos[];
 }

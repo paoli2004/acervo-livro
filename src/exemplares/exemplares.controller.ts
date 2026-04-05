@@ -1,1 +1,61 @@
-// ...controller file for Exemplares
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ExemplaresService } from './exemplares.service';
+import { CreateExemplarDto } from './dto/createExemplar.dto';
+import { UpdateExemplarDto } from './dto/updateExemplar.dto';
+import { Exemplares } from './entities/exemplares.entity';
+
+@Controller('exemplares')
+export class ExemplaresController {
+  constructor(private readonly exemplaresService: ExemplaresService) {}
+
+  @Post()
+  async createExemplar(@Body() createExemplar: CreateExemplarDto) {
+    await this.exemplaresService.createExemplar(createExemplar);
+
+    return {
+      message: 'Exemplar criado com sucesso',
+    };
+  }
+
+  @Put(':id')
+  async updateExemplar(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateExemplar: UpdateExemplarDto,
+  ) {
+    await this.exemplaresService.updateExemplar(id, updateExemplar);
+
+    return {
+      message: 'Exemplar atualizado com sucesso',
+    };
+  }
+
+  @Delete(':id')
+  async removeExemplar(@Param('id', ParseIntPipe) id: number) {
+    await this.exemplaresService.removeExemplar(id);
+
+    return {
+      message: 'Exemplar removido com sucesso',
+    };
+  }
+
+  @Get(':id')
+  async getExemplarById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Exemplares | null> {
+    return this.exemplaresService.getExemplarById(id);
+  }
+
+  @Get()
+  async getAllExemplares(): Promise<Exemplares[]> {
+    return this.exemplaresService.getAllExemplares();
+  }
+}
