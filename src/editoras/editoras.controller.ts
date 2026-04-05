@@ -4,7 +4,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Patch,
   ParseIntPipe,
 } from '@nestjs/common';
 import { EditorasService } from './editoras.service';
@@ -22,7 +22,7 @@ export class EditorasController {
     return this.editorasService.createEditora(createEditora);
   }
 
-  @Put(':id')
+  @Patch(':id')
   updateEditora(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateEditora: UpdateEditoraDto,

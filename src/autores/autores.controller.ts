@@ -4,12 +4,13 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { AutoresService } from './autores.service';
 import { CreateAutorDto } from './dto/createAutor.dto';
 import { Autores } from './entities/autores.entity';
+import { UpdateAutorDto } from './dto/updateAutor.dto';
 
 @Controller('autores')
 export class AutoresController {
@@ -24,10 +25,10 @@ export class AutoresController {
     };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateAutor(
     @Param('id') id: number,
-    @Body() updateAutor: CreateAutorDto,
+    @Body() updateAutor: UpdateAutorDto,
   ) {
     await this.autoresService.updateAutor(id, updateAutor);
 

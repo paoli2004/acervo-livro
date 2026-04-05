@@ -3,9 +3,9 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { LivrosService } from './livros.service';
 import { CreateLivroDto } from './dto/createLivro.dto';
@@ -24,7 +24,7 @@ export class LivrosController {
     };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateLivro(
     @Param('id') id: number,
     @Body() updateLivroDto: UpdateLivroDto,

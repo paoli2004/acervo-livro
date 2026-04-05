@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dto/createCategoria.dto';
 import { Categorias } from './entities/categorias.entity';
@@ -13,7 +13,7 @@ export class CategoriasController {
     return this.categoriasService.createCategoria(createCategoria);
   }
 
-  @Put(':id')
+  @Patch(':id')
   updateCategoria(
     @Param('id') id: number,
     @Body() updateCategoria: UpdateCategoriaDto,
