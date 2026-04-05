@@ -30,16 +30,12 @@ export class EditorasService {
   async updateEditora(
     id: number,
     updateEditora: UpdateEditoraDto,
-  ): Promise<Editoras> {
-    const editora = await this.getEditoraById(id);
+  ): Promise<Editoras | null> {
+    await this.getEditoraById(id);
 
-    if (!editora) {
-      throw new NotFoundException('Editora não encontrada');
-    }
+    await this.editorasRepository.update(id, updateEditora);
 
-    Object.assign(editora, updateEditora);
-
-    return this.editorasRepository.save(editora);
+    return this.getEditoraById(id);
   }
 
   /**
@@ -48,10 +44,13 @@ export class EditorasService {
    * @returns Editora encontrada.
    */
   async getEditoraById(id: number): Promise<Editoras | null> {
-    if (!id) {
+    const editora = await this.editorasRepository.findOne({ where: { id } });
+
+    if (!editora) {
       throw new NotFoundException('Editora não encontrada');
     }
-    return this.editorasRepository.findOne({ where: { id } });
+
+    return editora;
   }
 
   /**
@@ -60,5 +59,14 @@ export class EditorasService {
    */
   async getAllEditoras(): Promise<Editoras[]> {
     return this.editorasRepository.find();
+  }
+
+  /**
+   * Remove uma Editora.
+   * @param id ID da Editora.
+   */
+  async removeEditora(id: number): Promise<void> {
+    const editora = await this.getEditoraById(id);
+    if (editora) await this.editorasRepository.remove(editora);
   }
 }

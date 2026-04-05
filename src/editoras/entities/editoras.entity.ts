@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Livros } from '../../livros/entities/livros.entity';
 
 @Entity({ name: 'editoras' })
