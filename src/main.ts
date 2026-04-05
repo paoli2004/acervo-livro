@@ -12,7 +12,11 @@ async function bootstrap() {
       transform: true, // transforma DTO automaticamente
     }),
   );
-  
+
+  app.enableCors({
+    origin: 'http://localhost:5173', // porta do front
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
