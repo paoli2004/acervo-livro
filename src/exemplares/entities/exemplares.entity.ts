@@ -10,6 +10,12 @@ import {
 import { Livros } from '../../livros/entities/livros.entity';
 import { Emprestimos } from '../../emprestimos/entities/emprestimos.entity';
 
+export enum statusExemplar {
+  DISPONIVEL = 'DISPONIVEL',
+  EMPRESTADO = 'EMPRESTADO',
+  MANUTENCAO = 'MANUTENCAO',
+}
+
 @Entity({ name: 'exemplares' })
 export class Exemplares {
   @PrimaryGeneratedColumn()
@@ -20,8 +26,15 @@ export class Exemplares {
   @JoinColumn({ name: 'livro_id' })
   livros!: Livros;
 
-  @Column({ unique: true, type: 'int' })
-  codigo_patrimonio!: number;
+  @Column({ length: 50, unique: true })
+  codigo_patrimonio!: string;
+
+  @Column({
+    type: 'enum',
+    enum: statusExemplar,
+    default: statusExemplar.DISPONIVEL,
+  })
+  status!: statusExemplar;
 
   // DESCOMENTAR SOMENTE QUANDO EMPRESTIMOS FOR FEITO
   // // um exemplar pode ter muitos empréstimos, mas um empréstimo pertence a um exemplar

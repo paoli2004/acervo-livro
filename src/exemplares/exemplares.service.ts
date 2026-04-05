@@ -18,7 +18,8 @@ export class ExemplaresService {
    * @returns Exemplar criado.
    */
   async createExemplar(createExemplar: CreateExemplarDto): Promise<void> {
-    await this.exemplaresRepository.save(createExemplar);
+    const exemplar = this.exemplaresRepository.create(createExemplar);
+    await this.exemplaresRepository.save(exemplar);
   }
 
   /**
@@ -31,9 +32,15 @@ export class ExemplaresService {
     id: number,
     updateExemplar: UpdateExemplarDto,
   ): Promise<void> {
-    await this.getExemplarById(id);
+    const exemplar = await this.getExemplarById(id);
 
-    await this.exemplaresRepository.update(id, updateExemplar);
+    if (!exemplar) {
+      throw new NotFoundException('Exemplar não encontrado');
+    }
+
+    Object.assign(exemplar, updateExemplar);
+
+    await this.exemplaresRepository.save(exemplar);
   }
 
   /**

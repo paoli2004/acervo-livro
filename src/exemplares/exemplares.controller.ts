@@ -5,8 +5,8 @@ import {
   Get,
   Param,
   Post,
-  Put,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { ExemplaresService } from './exemplares.service';
 import { CreateExemplarDto } from './dto/createExemplar.dto';
@@ -26,7 +26,7 @@ export class ExemplaresController {
     };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateExemplar(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateExemplar: UpdateExemplarDto,
