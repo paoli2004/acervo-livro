@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Livros } from '../../livros/entities/livros.entity';
+import { Exemplares } from '../../exemplares/entities/exemplares.entity';
 
 @Entity({ name: 'editoras' })
 export class Editoras {
@@ -13,6 +13,6 @@ export class Editoras {
   cidade!: string;
 
   // um livro tem apenas uma editora, mas uma editora pode ter muitos livros
-  @OneToMany(() => Livros, (livros) => livros.editora)
-  livros!: Livros[];
+  @OneToMany(() => Exemplares, (exemplares) => exemplares.editora)
+  exemplares!: Exemplares[];
 }

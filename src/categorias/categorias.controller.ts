@@ -6,10 +6,10 @@ import {
   Patch,
   Post,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dto/createCategoria.dto';
-import { Categorias } from './entities/categorias.entity';
 import { UpdateCategoriaDto } from './dto/updateCategoria.dto';
 
 @Controller('categorias')
@@ -17,30 +17,33 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
-  createCategoria(@Body() createCategoria: CreateCategoriaDto) {
-    return this.categoriasService.createCategoria(createCategoria);
+  async createCategoria(@Body() createCategoria: CreateCategoriaDto) {
+    await this.categoriasService.createCategoria(createCategoria);
+
+    return {
+      message: 'Categoria criada com sucesso',
+    };
   }
 
   @Patch(':id')
-  updateCategoria(
-    @Param('id') id: number,
+  async updateCategoria(
+    @Param('id' , ParseIntPipe) id: number,
     @Body() updateCategoria: UpdateCategoriaDto,
-  ): Promise<Categorias> {
-    return this.categoriasService.updateCategoria(id, updateCategoria);
-  }
+  ) {
+    await this.categoriasService.updateCategoria(id, updateCategoria);
 
-  @Get(':id')
-  getCategoriaById(@Param('id') id: number): Promise<Categorias | null> {
-    return this.categoriasService.getCategoriaById(id);
+    return {
+      message: 'Categoria atualizada com sucesso',
+    };
   }
 
   @Get()
-  getAllCategorias(): Promise<Categorias[]> {
+  async getAllCategorias() {
     return this.categoriasService.getAllCategorias();
   }
 
-  @Delete(':id')
-  removeCategoria(@Param('id') id: number) {
-    return this.categoriasService.removeCategoria(id);
+  @Get(':id')
+  async getCategoriaById(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriasService.getCategoriaById(id);
   }
 }

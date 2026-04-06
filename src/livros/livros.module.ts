@@ -7,8 +7,8 @@ import { Editoras } from '../editoras/entities/editoras.entity';
 import { Autores } from '../autores/entities/autores.entity';
 import { Categorias } from '../categorias/entities/categorias.entity';
 import { AutoresModule } from '../autores/autores.module';
-import { CategoriasModule } from 'src/categorias/categorias.module';
-import { EditorasModule } from 'src/editoras/editoras.module';
+import { CategoriasModule } from '../categorias/categorias.module';
+import { EditorasModule } from '../editoras/editoras.module';
 
 @Module({
   imports: [
@@ -19,5 +19,6 @@ import { EditorasModule } from 'src/editoras/editoras.module';
   ],
   controllers: [LivrosController],
   providers: [LivrosService],
+  exports: [LivrosService],
 })
 export class LivrosModule {}

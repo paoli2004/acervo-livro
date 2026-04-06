@@ -18,7 +18,6 @@ export class LivrosService {
   constructor(
     @InjectRepository(Livros)
     private readonly livrosRepository: Repository<Livros>,
-    private readonly EditorasService: EditorasService,
     private readonly AutoresService: AutoresService,
     private readonly CategoriasService: CategoriasService,
   ) {}
@@ -60,10 +59,6 @@ export class LivrosService {
       );
     }
 
-    const editora = await this.findOrFail(
-      this.EditorasService.getEditoraById(createLivro.editora_id),
-      'Editora não encontrada',
-    );
     const categoria = await this.findOrFail(
       this.CategoriasService.getCategoriaById(createLivro.categoria_id),
       'Categoria não encontrada',
@@ -80,8 +75,6 @@ export class LivrosService {
     const livro = this.livrosRepository.create({
       titulo: createLivro.titulo,
       isbn: createLivro.isbn,
-      ano_publicacao: createLivro.ano_publicacao,
-      editora: editora,
       autor: autor ? [autor] : [],
       categoria: [categoria],
     });
@@ -111,13 +104,6 @@ export class LivrosService {
       }
     }
 
-    if (updateLivro.editora_id) {
-      livro.editora = await this.findOrFail(
-        this.EditorasService.getEditoraById(updateLivro.editora_id),
-        'Editora não encontrada',
-      );
-    }
-
     if (updateLivro.autor_id) {
       const autor = await this.findOrFail(
         this.AutoresService.getAutorById(updateLivro.autor_id),
@@ -136,8 +122,7 @@ export class LivrosService {
 
     Object.assign(livro, {
       titulo: updateLivro.titulo ?? livro.titulo,
-      isbn: updateLivro.isbn ?? livro.isbn,
-      ano_publicacao: updateLivro.ano_publicacao ?? livro.ano_publicacao,
+      isbn: updateLivro.isbn ?? livro.isbn
     });
 
     await this.livrosRepository.save(livro);
@@ -164,12 +149,11 @@ export class LivrosService {
   async getAllLivros(): Promise<any[]> {
     const livros = await this.livrosRepository.find({
       order: { id: 'ASC' },
-      relations: ['editora', 'autor', 'categoria'],
+      relations: ['autor', 'categoria'],
     });
 
     return livros.map((livro) => ({
       ...livro,
-      editora: livro.editora,
       autor: livro.autor || null,
       categoria: livro.categoria,
     }));
@@ -183,7 +167,7 @@ export class LivrosService {
   async getLivroById(id: number): Promise<any> {
     const livro = await this.livrosRepository.findOne({
       where: { id },
-      relations: ['editora', 'autor', 'categoria'],
+      relations: ['autor', 'categoria'],
     });
 
     if (!livro) {
@@ -194,8 +178,6 @@ export class LivrosService {
       id: livro.id,
       titulo: livro.titulo,
       isbn: livro.isbn,
-      ano_publicacao: livro.ano_publicacao,
-      editora: livro.editora,
       autor: livro.autor || null,
       categoria: livro.categoria,
     };
