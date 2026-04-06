@@ -27,7 +27,7 @@ export class CategoriasController {
 
   @Patch(':id')
   async updateCategoria(
-    @Param('id' , ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoria: UpdateCategoriaDto,
   ) {
     await this.categoriasService.updateCategoria(id, updateCategoria);
@@ -45,5 +45,14 @@ export class CategoriasController {
   @Get(':id')
   async getCategoriaById(@Param('id', ParseIntPipe) id: number) {
     return this.categoriasService.getCategoriaById(id);
+  }
+
+  @Delete(':id')
+  async removeCategoria(@Param('id', ParseIntPipe) id: number) {
+    await this.categoriasService.removeCategoria(id);
+
+    return {
+      message: 'Categoria removida com sucesso',
+    };
   }
 }
