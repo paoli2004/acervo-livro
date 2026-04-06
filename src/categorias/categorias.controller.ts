@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Delete,
+} from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CreateCategoriaDto } from './dto/createCategoria.dto';
 import { Categorias } from './entities/categorias.entity';
@@ -29,5 +37,10 @@ export class CategoriasController {
   @Get()
   getAllCategorias(): Promise<Categorias[]> {
     return this.categoriasService.getAllCategorias();
+  }
+
+  @Delete(':id')
+  removeCategoria(@Param('id') id: number) {
+    return this.categoriasService.removeCategoria(id);
   }
 }

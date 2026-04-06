@@ -65,4 +65,12 @@ export class CategoriasService {
       order: { id: 'ASC' },
     });
   }
+
+  async removeCategoria(id: number): Promise<void> {
+    const categoria = await this.getCategoriaById(id);
+    if (!categoria) {
+      throw new NotFoundException('Categoria não encontrada');
+    }
+    await this.categoriasRepository.remove(categoria);
+  }
 }
