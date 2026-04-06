@@ -169,9 +169,9 @@ export class LivrosService {
 
     return livros.map((livro) => ({
       ...livro,
-      editora: livro.editora.nome,
-      autor: livro.autor?.[0]?.nome || null,
-      categoria: livro.categoria[0].nome,
+      editora: livro.editora,
+      autor: livro.autor || null,
+      categoria: livro.categoria,
     }));
   }
 
@@ -180,10 +180,24 @@ export class LivrosService {
    * @param id ID do livro.
    * @returns Livro encontrado.
    */
-  async getLivroById(id: number): Promise<Livros | null> {
-    return await this.livrosRepository.findOne({
+  async getLivroById(id: number): Promise<any> {
+    const livro = await this.livrosRepository.findOne({
       where: { id },
       relations: ['editora', 'autor', 'categoria'],
     });
+
+    if (!livro) {
+      throw new NotFoundException('Livro não encontrado');
+    }
+
+    return {
+      id: livro.id,
+      titulo: livro.titulo,
+      isbn: livro.isbn,
+      ano_publicacao: livro.ano_publicacao,
+      editora: livro.editora,
+      autor: livro.autor || null,
+      categoria: livro.categoria,
+    };
   }
 }
