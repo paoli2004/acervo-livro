@@ -19,27 +19,33 @@ export class EditorasController {
   constructor(private readonly editorasService: EditorasService) {}
 
   @Post()
-  createEditora(@Body() createEditora: CreateEditoraDto) {
-    return this.editorasService.createEditora(createEditora);
+  async createEditora(@Body() createEditora: CreateEditoraDto) {
+    await this.editorasService.createEditora(createEditora);
+
+    return {
+      message: 'Editora criada com sucesso',
+    };
   }
 
   @Patch(':id')
-  updateEditora(
+  async updateEditora(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateEditora: UpdateEditoraDto,
-  ): Promise<Editoras | null> {
-    return this.editorasService.updateEditora(id, updateEditora);
+  ) {
+    await this.editorasService.updateEditora(id, updateEditora);
+
+    return {
+      message: 'Editora atualizada com sucesso',
+    };
   }
 
   @Get(':id')
-  getEditoraById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Editoras | null> {
+  async getEditoraById(@Param('id', ParseIntPipe) id: number) {
     return this.editorasService.getEditoraById(id);
   }
 
   @Get()
-  getAllEditora(): Promise<Editoras[]> {
+  async getAllEditoras() {
     return this.editorasService.getAllEditoras();
   }
 

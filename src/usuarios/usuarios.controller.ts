@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -37,7 +38,7 @@ export class UsuariosController {
   }
 
   @Delete(':id')
-  async removeUsuario(@Param('id') id: number) {
+  async removeUsuario(@Param('id', ParseIntPipe) id: number) {
     await this.usuariosService.removeUsuario(id);
 
     return {
@@ -46,7 +47,7 @@ export class UsuariosController {
   }
 
   @Get(':id')
-  async getUsuarioById(@Param('id') id: number) {
+  async getUsuarioById(@Param('id', ParseIntPipe) id: number) {
     return this.usuariosService.getUsuarioById(id);
   }
 

@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Patch,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { LivrosService } from './livros.service';
 import { CreateLivroDto } from './dto/createLivro.dto';
@@ -26,7 +27,7 @@ export class LivrosController {
 
   @Patch(':id')
   async updateLivro(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateLivroDto: UpdateLivroDto,
   ) {
     await this.livrosService.updateLivro(id, updateLivroDto);
@@ -37,7 +38,7 @@ export class LivrosController {
   }
 
   @Delete(':id')
-  async removeLivro(@Param('id') id: number) {
+  async removeLivro(@Param('id', ParseIntPipe) id: number) {
     await this.livrosService.removeLivro(id);
 
     return {

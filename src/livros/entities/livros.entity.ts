@@ -21,20 +21,12 @@ export class Livros {
   @Column({ length: 150 })
   titulo!: string;
 
-  @Column({ length: 20, unique: true })
-  isbn!: string;
-
-  @Column()
-  ano_publicacao!: number;
-
-  // uma editora pode ter muitos livros, mas um livro tem apenas uma editora
-  @ManyToOne(() => Editoras, (editoras) => editoras.livros)
-  @JoinColumn({ name: 'editora_id' })
-  editora!: Editoras;
+  @Column({ unique: true })
+  isbn!: number;
 
   // um livro pode ter muitos exemplares, mas um exemplar tem apenas um livro
-  @OneToMany(() => Exemplares, (exemplares) => exemplares.livros)
-  exemplares!: Exemplares[];
+  @OneToMany(() => Exemplares, (exemplares) => exemplares.livro)
+  exemplar!: Exemplares[];
 
   @ManyToMany(() => Autores, (autor) => autor.livros)
   @JoinTable({

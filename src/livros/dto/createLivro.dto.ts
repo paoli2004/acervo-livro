@@ -7,15 +7,7 @@ export class CreateLivroDto {
 
   @IsNotEmpty()
   @IsString()
-  isbn!: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  ano_publicacao!: number;
-
-  @IsNotEmpty()
-  @IsInt()
-  editora_id!: number;
+  isbn!: number;
 
   @IsInt()
   autor_id?: number;

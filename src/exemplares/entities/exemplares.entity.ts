@@ -9,12 +9,7 @@ import {
 } from 'typeorm';
 import { Livros } from '../../livros/entities/livros.entity';
 import { Emprestimos } from '../../emprestimos/entities/emprestimos.entity';
-
-export enum statusExemplar {
-  DISPONIVEL = 'DISPONIVEL',
-  EMPRESTADO = 'EMPRESTADO',
-  MANUTENCAO = 'MANUTENCAO',
-}
+import { Editoras } from 'src/editoras/entities/editoras.entity';
 
 @Entity({ name: 'exemplares' })
 export class Exemplares {
@@ -22,22 +17,22 @@ export class Exemplares {
   id!: number;
 
   // um exemplar pertence a um livro, mas um livro pode ter muitos exemplares
-  @ManyToOne(() => Livros, (livro) => livro.exemplares)
+  @ManyToOne(() => Livros, (livro) => livro.exemplar)
   @JoinColumn({ name: 'livro_id' })
-  livros!: Livros;
+  livro!: Livros;
 
-  @Column({ length: 50, unique: true })
-  codigo_patrimonio!: string;
+  @Column({ unique: true })
+  codigo_patrimonio!: number;
+  
+  @Column()
+  ano_publicacao!: number;
 
-  @Column({
-    type: 'enum',
-    enum: statusExemplar,
-    default: statusExemplar.DISPONIVEL,
-  })
-  status!: statusExemplar;
+  // um exemplar pode ter muitos empréstimos, mas um empréstimo pertence a um exemplar
+  @OneToMany(() => Emprestimos, (emprestimos) => emprestimos.exemplar)
+  emprestimos!: Emprestimos[];
 
-  // DESCOMENTAR SOMENTE QUANDO EMPRESTIMOS FOR FEITO
-  // // um exemplar pode ter muitos empréstimos, mas um empréstimo pertence a um exemplar
-  // @OneToMany(() => Emprestimos, (emprestimos) => emprestimos.exemplar)
-  // emprestimos!: Emprestimos[];
+  // uma editora pode ter muitos livros, mas um livro tem apenas uma editora
+  @ManyToOne(() => Editoras, (editoras) => editoras.exemplares)
+  @JoinColumn({ name: 'editora_id' })
+  editora!: Editoras;
 }
