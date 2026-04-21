@@ -82,7 +82,7 @@ export class UsuariosService {
   async getAllUsuarios(): Promise<Usuarios[]> {
     return this.usuariosRepository.find({
       order: { id: 'ASC' },
-      select: ['id', 'nome', 'email'],
+      select: ['id', 'nome', 'email', 'senha', 'tipo'],
     });
   }
 }

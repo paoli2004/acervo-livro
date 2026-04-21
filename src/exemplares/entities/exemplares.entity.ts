@@ -23,7 +23,7 @@ export class Exemplares {
 
   @Column({ unique: true })
   codigo_patrimonio!: number;
-  
+
   @Column()
   ano_publicacao!: number;
 
