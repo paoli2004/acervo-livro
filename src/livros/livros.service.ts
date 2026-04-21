@@ -9,7 +9,6 @@ import { CreateLivroDto } from './dto/createLivro.dto';
 import { Livros } from './entities/livros.entity';
 import { Autores } from '../autores/entities/autores.entity';
 import { AutoresService } from '../autores/autores.service';
-import { EditorasService } from '../editoras/editoras.service';
 import { CategoriasService } from '../categorias/categorias.service';
 import { UpdateLivroDto } from './dto/updateLivro.dto';
 
@@ -59,24 +58,31 @@ export class LivrosService {
       );
     }
 
-    const categoria = await this.findOrFail(
-      this.CategoriasService.getCategoriaById(createLivro.categoria_id),
-      'Categoria não encontrada',
+    const categorias = await Promise.all(
+      createLivro.categoria_id.map((id) =>
+        this.findOrFail(
+          this.CategoriasService.getCategoriaById(id),
+          `Categoria ${id} não encontrada`,
+        ),
+      ),
     );
-    let autor: Autores | null = null;
 
-    if (createLivro.autor_id) {
-      autor = await this.findOrFail(
-        this.AutoresService.getAutorById(createLivro.autor_id),
-        'Autor não encontrado',
-      );
-    }
+    const autores = createLivro.autor_id?.length
+      ? await Promise.all(
+          createLivro.autor_id.map((id) =>
+            this.findOrFail(
+              this.AutoresService.getAutorById(id),
+              `Autor ${id} não encontrado`,
+            ),
+          ),
+        )
+      : [];
 
     const livro = this.livrosRepository.create({
       titulo: createLivro.titulo,
       isbn: createLivro.isbn,
-      autor: autor ? [autor] : [],
-      categoria: [categoria],
+      autor: autores,
+      categoria: categorias,
     });
 
     await this.livrosRepository.save(livro);
@@ -88,13 +94,9 @@ export class LivrosService {
       'Livro não encontrado',
     );
 
-    // verifica se o ISBN já existe em outro livro
     if (updateLivro.isbn) {
       const isbnAlreadyExist = await this.livrosRepository.findOne({
-        where: {
-          isbn: updateLivro.isbn,
-          id: Not(id), // ignora o contexto do id a ser atualizado para verificação
-        },
+        where: { isbn: updateLivro.isbn, id: Not(id) },
       });
 
       if (isbnAlreadyExist) {
@@ -104,25 +106,31 @@ export class LivrosService {
       }
     }
 
-    if (updateLivro.autor_id) {
-      const autor = await this.findOrFail(
-        this.AutoresService.getAutorById(updateLivro.autor_id),
-        'Autor não encontrado',
+    if (updateLivro.autor_id?.length) {
+      livro.autor = await Promise.all(
+        updateLivro.autor_id.map((autorId) =>
+          this.findOrFail(
+            this.AutoresService.getAutorById(autorId),
+            `Autor ${autorId} não encontrado`,
+          ),
+        ),
       );
-      livro.autor = [autor];
     }
 
-    if (updateLivro.categoria_id) {
-      const categoria = await this.findOrFail(
-        this.CategoriasService.getCategoriaById(updateLivro.categoria_id),
-        'Categoria não encontrada',
+    if (updateLivro.categoria_id?.length) {
+      livro.categoria = await Promise.all(
+        updateLivro.categoria_id.map((catId) =>
+          this.findOrFail(
+            this.CategoriasService.getCategoriaById(catId),
+            `Categoria ${catId} não encontrada`,
+          ),
+        ),
       );
-      livro.categoria = [categoria];
     }
 
     Object.assign(livro, {
       titulo: updateLivro.titulo ?? livro.titulo,
-      isbn: updateLivro.isbn ?? livro.isbn
+      isbn: updateLivro.isbn ?? livro.isbn,
     });
 
     await this.livrosRepository.save(livro);

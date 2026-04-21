@@ -22,7 +22,7 @@ export class Livros {
   titulo!: string;
 
   @Column({ unique: true })
-  isbn!: number;
+  isbn!: string;
 
   // um livro pode ter muitos exemplares, mas um exemplar tem apenas um livro
   @OneToMany(() => Exemplares, (exemplares) => exemplares.livro)
