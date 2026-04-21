@@ -68,8 +68,6 @@ export class UsuariosService {
 
     if (!usuario) {
       throw new NotFoundException('Usuário não encontrado');
-    } else if (usuario.tipo === 'ADMIN') {
-      throw new ForbiddenException('Não é permitido remover um usuário ADMIN');
     }
 
     await this.usuariosRepository.remove(usuario);
@@ -82,7 +80,7 @@ export class UsuariosService {
   async getAllUsuarios(): Promise<Usuarios[]> {
     return this.usuariosRepository.find({
       order: { id: 'ASC' },
-      select: ['id', 'nome', 'email', 'senha', 'tipo'],
+      select: ['id', 'nome', 'email', 'senha'],
     });
   }
 }
