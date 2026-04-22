@@ -146,12 +146,15 @@ export class ExemplaresService {
   async getAllExemplares(): Promise<any[]> {
     const exemplares = await this.exemplaresRepository.find({
       order: { id: 'ASC' },
-      relations: ['livro', 'editora'],
+      relations: ['livro', 'livro.autor', 'editora'],
     });
 
     return exemplares.map((exemplar) => ({
       ...exemplar,
-      livro: exemplar.livro,
+      livro: {
+        ...exemplar.livro,
+        autores: exemplar.livro?.autor ?? [],
+      },
       editora: exemplar.editora,
     }));
   }
