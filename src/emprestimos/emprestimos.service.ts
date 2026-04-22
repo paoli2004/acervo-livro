@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Emprestimos } from './entities/emprestimos.entity';
 import { Repository } from 'typeorm';
@@ -51,6 +55,17 @@ export class EmprestimosService {
       this.exemplaresService.getExemplarById(createEmprestimo.exemplar_id),
       'Exemplar não encontrado',
     );
+
+    const exemplarJaEmprestado = await this.emprestimosRepository.findOne({
+      where: {
+        exemplar: { id: createEmprestimo.exemplar_id },
+        ativo: true,
+      },
+    });
+
+    if (exemplarJaEmprestado) {
+      throw new ConflictException('Este exemplar já está emprestado.');
+    }
 
     const emprestimo = this.emprestimosRepository.create({
       usuario: usuario,
