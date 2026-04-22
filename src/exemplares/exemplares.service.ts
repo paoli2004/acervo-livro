@@ -160,14 +160,60 @@ export class ExemplaresService {
   }
 
   /**
+   * Retorna os exemplares registrados que não possuem emprestimo ativo.
+   * @returns Lista de exemplares.
+   */
+  async getExemplaresDisponiveis(): Promise<any[]> {
+    const exemplares = await this.exemplaresRepository
+      .createQueryBuilder('exemplar')
+      .leftJoinAndSelect('exemplar.livro', 'livro')
+      .leftJoinAndSelect('livro.autor', 'autor')
+      .leftJoinAndSelect('exemplar.editora', 'editora')
+      .leftJoin(
+        'exemplar.emprestimos',
+        'emprestimo',
+        'emprestimo.ativo = :ativo',
+        { ativo: true },
+      )
+      .where('emprestimo.id IS NULL')
+      .orderBy('exemplar.id', 'ASC')
+      .getMany();
+
+    return exemplares.map((exemplar) => ({
+      ...exemplar,
+      livro: {
+        ...exemplar.livro,
+        autores: exemplar.livro?.autor ?? [],
+      },
+      editora: exemplar.editora,
+    }));
+  }
+
+  /**
    * Retorna todos os exemplares de um livro.
+   *  @param onlyDisponiveis - se true, retorna somente os exemplares que nao possuem emprestimo ativo.
    * @returns Lista de exemplares de um livro.
    */
-  async getExemplaresByLivro(livro_id: number): Promise<any[]> {
-    const exemplares = await this.exemplaresRepository.find({
-      where: { livro: { id: livro_id } },
-      relations: ['livro', 'editora'],
-    });
+  async getExemplaresByLivro(
+    livro_id: number,
+    onlyDisponiveis = false,
+  ): Promise<any[]> {
+    const qb = this.exemplaresRepository
+      .createQueryBuilder('exemplar')
+      .leftJoinAndSelect('exemplar.livro', 'livro')
+      .leftJoinAndSelect('exemplar.editora', 'editora')
+      .where('livro.id = :livro_id', { livro_id });
+
+    if (onlyDisponiveis) {
+      qb.leftJoin(
+        'exemplar.emprestimos',
+        'emprestimo',
+        'emprestimo.ativo = :ativo',
+        { ativo: true },
+      ).andWhere('emprestimo.id IS NULL');
+    }
+
+    const exemplares = await qb.orderBy('exemplar.id', 'ASC').getMany();
 
     return exemplares.map((exemplar) => ({
       id: exemplar.id,

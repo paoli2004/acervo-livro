@@ -7,6 +7,7 @@ import {
   Post,
   ParseIntPipe,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { ExemplaresService } from './exemplares.service';
 import { CreateExemplarDto } from './dto/createExemplar.dto';
@@ -47,6 +48,11 @@ export class ExemplaresController {
     };
   }
 
+  @Get('disponiveis')
+  async getExemplaresDisponiveis(): Promise<any[]> {
+    return this.exemplaresService.getExemplaresDisponiveis();
+  }
+
   @Get(':id')
   async getExemplarById(
     @Param('id', ParseIntPipe) id: number,
@@ -60,7 +66,13 @@ export class ExemplaresController {
   }
 
   @Get('livro/:livro_id')
-  getByLivro(@Param('livro_id') livro_id: number) {
-    return this.exemplaresService.getExemplaresByLivro(livro_id);
+  getByLivro(
+    @Param('livro_id') livro_id: number,
+    @Query('onlyDisponiveis') onlyDisponiveis?: string,
+  ) {
+    return this.exemplaresService.getExemplaresByLivro(
+      livro_id,
+      onlyDisponiveis === 'true',
+    );
   }
 }
