@@ -1,47 +1,35 @@
-# Rascunho
+<p align="center">
+  <a href="http://nestjs.com/" target="blank">
+    <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
+  </a>
+</p>
 
-Usamos o ubuntu WSL
+## 📚 Acervo de Livros
+Sistema para gerenciamento de livros e empréstimos
 
-Postgres 18.3
+---
 
-Comandos que usamos para fazer a conexão entre o código e o DB:
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo service postgresql start
-yarn add typeorm @nestjs/typeorm pg
+## 💻 SO utilizada
 
-modelagem:
+- WSL Ubuntu
 
-https://dbdiagram.io/d/69cf05f678c6c4bc7ad17c24
+---
 
+## 🛠️ Ferramentas e linguagens utilizadas
 
-TO DO
+- Back-end: Node.js + TypeScript  
+- Front-end: React  
+- Banco de dados: PostgreSQL  
 
-- [ ] Atualizar controller e services das seguintes entidades (seguir exemplo  de usuarios e autores)
-    - [ ] categorias
-    - [ ] editoras
-    - [ ] emprestimos
-    - [ ] exemplares
-    - [ ] livros
+---
 
-- [ ] Adicionar validação de campos ao criar ou realizar update
-- [ ] Fazer front para requisições
-- [ ] Verificar viabilidade quanto a criação de arquivos de teste
-
-
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## ▶️ Iniciando o projeto
 
 ```bash
 $ yarn install
 ```
 
-## Compile and run the project
-
+## 🚀 Compilando o projeto
 ```bash
 # development
 $ yarn run start
@@ -53,52 +41,46 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Comandos adicionais
-```
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo service postgresql start
-yarn add typeorm @nestjs/typeorm pg
-```
+## ⚙️ Configuração do ambiente (.env)
 
-
-## Run tests
+O projeto já contém um arquivo de exemplo chamado .env_copy.
 
 ```bash
-# unit tests
-$ yarn run test
+# Copie o arquivo de exemplo para criar seu arquivo de configuração
+cp .env_copy .env
+```
+### 📌 Configuração do banco de dados (.env)
 
-# e2e tests
-$ yarn run test:e2e
+Edite o arquivo `.env` gerado e configure as credenciais do PostgreSQL:
 
-# test coverage
-$ yarn run test:cov
+# Porta da aplicação
+`PORT=3000`
+
+```env
+# Configuração do banco de dados PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=acervo_livro
+DB_USER=postgres
+DB_PASS=postgres
 ```
 
+⚠️ Ajuste os valores conforme sua instalação local do PostgreSQL.
 
-## Resources
+## Comandos adicionais (caso não possua PostgreSQL instalado)
+```bash
+# Atualiza a lista de pacotes do sistema
+$ sudo apt update
 
-Check out a few resources that may come in handy when working with NestJS:
+# Instala o PostgreSQL e ferramentas adicionais
+$ sudo apt install postgresql postgresql-contrib
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Inicia o serviço do PostgreSQL
+$ sudo service postgresql start
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Instala as dependências de banco de dados no projeto NestJS
+# TypeORM: ORM para manipulação do banco
+# @nestjs/typeorm: integração com NestJS
+# pg: driver do PostgreSQL para Node.js
+$ yarn add typeorm @nestjs/typeorm pg
+```
