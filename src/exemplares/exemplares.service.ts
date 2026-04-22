@@ -158,4 +158,23 @@ export class ExemplaresService {
       editora: exemplar.editora,
     }));
   }
+
+  /**
+   * Retorna todos os exemplares de um livro.
+   * @returns Lista de exemplares de um livro.
+   */
+  async getExemplaresByLivro(livro_id: number): Promise<any[]> {
+    const exemplares = await this.exemplaresRepository.find({
+      where: { livro: { id: livro_id } },
+      relations: ['livro', 'editora'],
+    });
+
+    return exemplares.map((exemplar) => ({
+      id: exemplar.id,
+      livro: exemplar.livro,
+      codigo_patrimonio: exemplar.codigo_patrimonio,
+      ano_publicacao: exemplar.ano_publicacao,
+      editora: exemplar.editora,
+    }));
+  }
 }

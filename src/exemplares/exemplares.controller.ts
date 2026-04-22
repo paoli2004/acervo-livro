@@ -58,4 +58,9 @@ export class ExemplaresController {
   async getAllExemplares(): Promise<Exemplares[]> {
     return this.exemplaresService.getAllExemplares();
   }
+
+  @Get('livro/:livro_id')
+  getByLivro(@Param('livro_id') livro_id: number) {
+    return this.exemplaresService.getExemplaresByLivro(livro_id);
+  }
 }
