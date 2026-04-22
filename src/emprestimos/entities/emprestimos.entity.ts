@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  Column,
 } from 'typeorm';
 import { Usuarios } from '../../usuarios/entities/usuarios.entity';
 import { Exemplares } from '../../exemplares/entities/exemplares.entity';
@@ -28,4 +29,7 @@ export class Emprestimos {
 
   @CreateDateColumn()
   data_devolucao!: Date;
+
+  @Column()
+  ativo!: boolean;
 }

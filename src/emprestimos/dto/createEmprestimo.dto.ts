@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 
 export class CreateEmprestimoDto {
   @IsNumber()
@@ -19,4 +19,8 @@ export class CreateEmprestimoDto {
   @IsDate()
   @IsNotEmpty()
   data_devolucao!: Date;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  ativo!: boolean;
 }

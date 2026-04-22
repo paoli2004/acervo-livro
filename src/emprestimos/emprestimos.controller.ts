@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Patch,
+} from '@nestjs/common';
 import { EmprestimosService } from './emprestimos.service';
 import { CreateEmprestimoDto } from './dto/createEmprestimo.dto';
 
@@ -12,6 +21,15 @@ export class EmprestimosController {
 
     return {
       message: 'Empréstimo criado com sucesso',
+    };
+  }
+
+  @Patch(':id/devolucao')
+  async devolveEmprestivo(@Param('id', ParseIntPipe) id: number) {
+    await this.emprestimosService.devolveExemplar(id);
+
+    return {
+      message: 'Empréstimo devolvido com sucesso',
     };
   }
 

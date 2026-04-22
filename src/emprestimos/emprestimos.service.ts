@@ -57,6 +57,7 @@ export class EmprestimosService {
       exemplar: exemplar,
       data_emprestimo: createEmprestimo.data_emprestimo, // formato "2026-05-10"
       data_devolucao: createEmprestimo.data_devolucao, // formato "2026-05-20"
+      ativo: true,
     });
 
     await this.emprestimosRepository.save(emprestimo);
@@ -83,9 +84,23 @@ export class EmprestimosService {
 
     return emprestimo.map((emprestimo) => ({
       ...emprestimo,
-      usuario: emprestimo.usuario.nome,
-      exemplar: emprestimo.exemplar.livro?.titulo,
+      usuario: emprestimo.usuario,
+      exemplar: emprestimo.exemplar,
     }));
+  }
+
+  async devolveExemplar(id: number) {
+    const emprestimo = await this.emprestimosRepository.findOne({
+      where: { id },
+      relations: ['usuario', 'exemplar.livro'],
+    });
+
+    if (!emprestimo) {
+      throw new NotFoundException('Emprestimo não encontrado');
+    }
+
+    emprestimo.ativo = false;
+    await this.emprestimosRepository.save(emprestimo);
   }
 
   /**
