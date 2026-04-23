@@ -165,3 +165,7 @@ src/
 * **Entities** → mapeamento com o banco de dados
 
 ---
+
+## Diagrama disponibilizado para análise
+
+https://dbdiagram.io/d/69cf05f678c6c4bc7ad17c24
