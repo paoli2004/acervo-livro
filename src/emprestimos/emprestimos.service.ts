@@ -141,4 +141,77 @@ export class EmprestimosService {
       data_devolucao: emprestimo.data_devolucao,
     };
   }
+
+  async buscarAvancado(params: {
+    livro_id?: number;
+    usuario_id?: number;
+    exemplar_id?: number;
+    data_inicio?: Date;
+    data_fim?: Date;
+    ativo?: boolean;
+  }): Promise<any[]> {
+    const qb = this.emprestimosRepository
+      .createQueryBuilder('emprestimo')
+      .innerJoinAndSelect('emprestimo.usuario', 'usuario')
+      .innerJoinAndSelect('emprestimo.exemplar', 'exemplar')
+      .innerJoinAndSelect('exemplar.livro', 'livro')
+      .leftJoinAndSelect('livro.categoria', 'categoria');
+
+    if (params.livro_id) {
+      qb.andWhere('livro.id = :livro_id', { livro_id: params.livro_id });
+    }
+
+    if (params.usuario_id) {
+      qb.andWhere('usuario.id = :usuario_id', {
+        usuario_id: params.usuario_id,
+      });
+    }
+
+    if (params.exemplar_id) {
+      qb.andWhere('exemplar.id = :exemplar_id', {
+        exemplar_id: params.exemplar_id,
+      });
+    }
+
+    if (params.data_inicio && params.data_fim) {
+      qb.andWhere(
+        'emprestimo.data_emprestimo BETWEEN :data_inicio AND :data_fim',
+        {
+          data_inicio: params.data_inicio,
+          data_fim: params.data_fim,
+        },
+      );
+    } else if (params.data_inicio) {
+      qb.andWhere('emprestimo.data_emprestimo >= :data_inicio', {
+        data_inicio: params.data_inicio,
+      });
+    } else if (params.data_fim) {
+      qb.andWhere('emprestimo.data_emprestimo <= :data_fim', {
+        data_fim: params.data_fim,
+      });
+    }
+
+    if (params.ativo !== undefined) {
+      qb.andWhere('emprestimo.ativo = :ativo', { ativo: params.ativo });
+    }
+
+    const emprestimos = await qb.orderBy('emprestimo.id', 'ASC').getMany();
+
+    return emprestimos.map((e) => ({
+      id: e.id,
+      ativo: e.ativo,
+      data_emprestimo: e.data_emprestimo,
+      data_devolucao: e.data_devolucao,
+      usuario: e.usuario,
+      exemplar: {
+        id: e.exemplar.id,
+        codigo_patrimonio: e.exemplar.codigo_patrimonio,
+        livro: {
+          id: e.exemplar.livro.id,
+          titulo: e.exemplar.livro.titulo,
+          categoria: e.exemplar.livro.categoria ?? [],
+        },
+      },
+    }));
+  }
 }

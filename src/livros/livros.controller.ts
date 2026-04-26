@@ -7,6 +7,7 @@ import {
   Delete,
   Patch,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { LivrosService } from './livros.service';
 import { CreateLivroDto } from './dto/createLivro.dto';
@@ -49,6 +50,19 @@ export class LivrosController {
   @Get()
   async getAllLivros() {
     return this.livrosService.getAllLivros();
+  }
+
+  @Get('busca')
+  async buscarAvancado(
+    @Query('autor_id') autor_id?: number,
+    @Query('categoria_id') categoria_id?: number,
+    @Query('onlyDisponiveis') onlyDisponiveis?: string,
+  ): Promise<any[]> {
+    return this.livrosService.buscarAvancado({
+      autor_id: autor_id ? Number(autor_id) : undefined,
+      categoria_id: categoria_id ? Number(categoria_id) : undefined,
+      onlyDisponiveis: onlyDisponiveis === 'true',
+    });
   }
 
   @Get(':id')

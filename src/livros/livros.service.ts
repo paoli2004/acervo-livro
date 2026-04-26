@@ -190,4 +190,49 @@ export class LivrosService {
       categoria: livro.categoria,
     };
   }
+
+  async buscarAvancado(params: {
+    autor_id?: number;
+    categoria_id?: number;
+    onlyDisponiveis?: boolean;
+  }): Promise<any[]> {
+    const qb = this.livrosRepository
+      .createQueryBuilder('livro')
+      .leftJoinAndSelect('livro.autor', 'autor')
+      .leftJoinAndSelect('livro.categoria', 'categoria')
+      .leftJoin('livro.exemplar', 'exemplar')
+      .leftJoin(
+        'exemplar.emprestimos',
+        'emprestimo',
+        'emprestimo.ativo = :ativo',
+        { ativo: true },
+      );
+
+    if (params.autor_id) {
+      qb.andWhere('autor.id = :autor_id', { autor_id: params.autor_id });
+    }
+
+    if (params.categoria_id) {
+      qb.andWhere('categoria.id = :categoria_id', {
+        categoria_id: params.categoria_id,
+      });
+    }
+
+    if (params.onlyDisponiveis) {
+      qb.andWhere('emprestimo.id IS NULL');
+    }
+
+    const livros = await qb.orderBy('livro.id', 'ASC').getMany();
+
+    return livros.map((livro) => ({
+      id: livro.id,
+      titulo: livro.titulo,
+      isbn: livro.isbn,
+      autor: livro.autor ?? [],
+      categoria: livro.categoria ?? [],
+      temExemplarDisponivel: livro.exemplar?.some(
+        (e: any) => !e.emprestimos?.some((emp: any) => emp.ativo),
+      ),
+    }));
+  }
 }
